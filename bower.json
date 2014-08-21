@@ -1,0 +1,26 @@
+{
+  "name": "jquery.imageSlider",
+  "version": "0.1.0",
+  "authors": [
+    "Alexander Duml <alexander.duml@gmail.com>"
+  ],
+  "description": "image slider for jQuery",
+  "main": "jquery.imageSlider.js",
+  "keywords": [
+    "jquery",
+    "imageSlider"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "lib"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.1"
+  },
+  "homepage": "example.html"
+}
