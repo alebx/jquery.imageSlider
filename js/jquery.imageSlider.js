@@ -1,73 +1,81 @@
 /**
-jquery.imageSlider.js
-
-Copyright (C) 2014 Alexander Duml
-
-Permission is hereby granted, free of charge, to any person
-obtaining a copy of this software and associated documentation
-files (the "Software"), to deal in the Software without
-restriction, including without limitation the rights to use,
-copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the
-Software is furnished to do so, subject to the following
-conditions:
-
-The above copyright notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-OTHER DEALINGS IN THE SOFTWARE.
+* jquery.imageSlider.js
+* MIT licensed
+* Copyright (C) 2014 Alexander Duml
 **/
 
 ;(function($) {
-    $.fn.imageSlider = function() {
-        return this.each(function() {
-            var $self = $(this),
-                offset = $self.offset().left,
-                $photo = $self.find(".image-left"),
-                $img = $photo.find("img");
+    "use strict";
 
-            // set width and height
-            function setInitalParms() {
+    /**
+     * Appends jQuery.imageSlider
+     * @param {Object} options  imageSlider options {left: 'left image-url', right: 'right image-url'}
+     * @returns {jQuery}
+     */
+    $.fn.imageSlider = function(options) {
+        return this.each(function() {
+            if (!options.left || !options.right) {
+                throw "option image url is missing!";
+            }
+
+            // create dom structure
+            var $self = $(this)
+                    .empty()
+                    .addClass("image-slider-wrapper"),
+                $divLeft = $('<div>')
+                    .addClass('image-left')
+                    .append($('<img>').attr('src', options.left))
+                    .appendTo($self);
+            $('<div>')
+                .addClass('image-right')
+                .append($('<img>').attr('src', options.right))
+                .appendTo($self);
+
+            // get image information
+            var offset = $self.offset().left,
+                $img = $divLeft.find("img");
+
+            /**
+             * init imageSlider
+             */
+            function init() {
+                // init wrapper's width and height
                 $self
-                    .addClass("image-slider-wrapper")
                     .css("width", $img.width())
                     .css("height", $img.height());
 
-                    // init left image
-                    $photo.css('max-width', $img.width() + "px");
-                    setDivWidth($img.width() / 2);
-                }
+                // init left image div
+                $divLeft.css('max-width', $img.width() + "px");
+                setDivWidth($img.width() / 2);
+            }
 
-                // set left image-divs width
-                function setDivWidth(pixel) {
-                    $photo.width(pixel + "px");
-                }
+            /**
+             * Set left image-divs width
+             * @param {int} width
+             */
+            function setDivWidth(width) {
+                $divLeft.width(width + "px");
+            }
 
-                // check if image is already loaded
-                if ($img[0].complete) {
-                    setInitalParms();
-                } else {
-                    $img.load(setInitalParms);
-                }
+            // check if image is already loaded
+            if ($img[0].complete) {
+                init();
+            } else {
+                $img.load(init);
+            }
 
-                // add mouse listeners
-                $self
-                    .mousemove(function(e) {
-                        setDivWidth(e.pageX - offset);
-                    })
-                    .mouseleave(function(e) {
-                        setDivWidth(e.pageX - offset);
-                    })
-                    .bind("dragstart", function(e) {
-                        return false;
-                    });
+            // add mouse listeners
+            $self
+                .mousemove(function(e) {
+                    setDivWidth(e.pageX - offset);
+                })
+                .mouseleave(function(e) {
+                    setDivWidth(e.pageX - offset);
+                })
+                // disable drag and drop
+                .bind("dragstart", function() {
+                    return false;
+                });
         });
     };
-})($);
+})(jQuery);

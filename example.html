@@ -1,26 +1,23 @@
 <html>
 <head>
-<title>imageSlider Example</title>
+<title>jquery.imageSlider Example</title>
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="js/jquery.imageSlider.js"></script>
 <link rel="stylesheet" href="css/jquery.imageSlider.css">
 
 <script type="text/javascript">
 $(document).ready(function(){
-    $('.image-slider').imageSlider(); // append image slider
+    // append image slider
+    $('.image-slider').imageSlider({
+        left: "img/two_face_before.png",
+        right: "img/two_face_after.png"
+    });
 });
 </script>
 
 </head>
 <body>
-<h1>imageSlider Example</h1>
-<div class="image-slider">
-    <div class="image-left">
-        <img src="img/two_face_before.png" />
-    </div>
-    <div class="image-right">
-        <img src="img/two_face_after.png" />
-    </div>
-</div>
+<h1>jquery.imageSlider Example</h1>
+<div class="image-slider"></div>
 </body>
 </html>
